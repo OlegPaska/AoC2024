@@ -2,6 +2,7 @@ f = open("in.txt", 'r')
 l1 = []
 l2 = []
 for line in f:
+  n, m = map(int, line.split('   '))
   l1.append(int(line.split()[0]))
   l2.append(int(line.split()[1]))
 #q1
