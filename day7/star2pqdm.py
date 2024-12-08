@@ -1,4 +1,5 @@
 from pqdm.processes import pqdm
+import multiprocessing
 import time
 startTime = time.time()
 
@@ -65,10 +66,13 @@ if __name__ == '__main__':
   # for ni in nis:
   #   a += process_line(ni)
   # print(a)
-  res = pqdm(nis,process_line, n_jobs=20)
+  #res = pqdm(nis,process_line, n_jobs=20)
+  p = multiprocessing.Pool(20)
+  res = p.map(process_line, nis)
   a = sum(res)
   print(a)
   print("--- %s seconds ---" % (time.time() - startTime))
-  #7 seconds
+  #7 seconds pqdm
+  #6 secs pool
 
 
