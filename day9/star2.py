@@ -21,44 +21,75 @@ for i in range(len(inp)):
     flip = not flip
 
 print(disk)
-empty=0
-i=0
 
-#use raw input to find first gap for last file
-#for each insert reduce gap by file size
-#index is sum of elements till the file/gap
-#disk[sum(inp[:fileIndex*2])]
-#disk[sum(inp[:fileIndex*2+1])]
+
+def recalculate():
+  fc = 0
+  gc = 0
+  gaps.clear()
+  files.clear()
+  last = disk[0]
+  for i in disk:
+    if (last == '.') != (i == '.'):
+      if i == '.':
+        gaps.append(gc)
+        gc = 0
+      else:
+        files.append(fc)
+        fc = 0
+    if i == '.':
+      gc +=1
+    else:
+      fc +=1
+    last = i
+  gaps.pop(0)
+  files.append(fc)
+  gaps.append(gc)
+
+    
+
+
+#edge case HELLLL
+# gaps.append(0)
 # filled = [0]*len(range(len(files)))
 # for i in range(len(files)-1, -1, -1):
 #   for j in range(len(gaps)):
-#     if files[i] <= gaps[j]:
+#     if files[i] <= gaps[j] and files[i] !=0:
 #       gapIndex = sum(inp[:j*2+1])
-#       fileIndex = sum(inp[:i+filled[i]*2])
+#       fileIndex = sum(inp[:i*2])
 #       temp = disk[gapIndex:gapIndex+files[i]]
 #       disk[gapIndex:gapIndex+files[i]] = disk[fileIndex:fileIndex+files[i]]
 #       disk[fileIndex:fileIndex+files[i]] = temp
 #       gaps[j] -= files[i]
-#       filled[j] += files[i]
+#       gaps[i] += files[i]
+#       files[i] = 0
+#       files[j] += files[i]
+#       #recalculate()
+#       print(disk)
 #       break
 
-back = len(disk)-1
-while i > back:
-    # while disk[-1] == '.':
-    #     disk.pop()
-    if disk[i] == '.':
-      while disk[back] == ".":
-        back -=1
-      temp = disk[i]
-      disk[i] = disk[back]
-      disk[back] = temp
-      #print(disk)
-    i+=1
-print(disk)
+for i in range(len(files)-1, -1, -1):
+  count = 0
+  fileIndex = sum(inp[:i*2])
+  for j in range(fileIndex):
+    if disk[j] == '.':
+      count+=1
+      if count >= files[i]:
+        
+        j +=1
+        temp = disk[j-count:j]
+        disk[j-count:j] = disk[fileIndex:fileIndex+files[i]]
+        disk[fileIndex:fileIndex+files[i]] = temp
+        print(disk)
+        break
+    else:
+      count = 0
+
 s=0
 for i in range(len(disk)):
-    s+=i*disk[i]
+    if disk[i] != '.': s+=i*disk[i]
 print(s)
 
 
-print(disk)
+
+
